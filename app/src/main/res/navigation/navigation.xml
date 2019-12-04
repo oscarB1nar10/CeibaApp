@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/userCommentsListFragment">
+
+    <fragment
+        android:id="@+id/userCommentsListFragment"
+        android:name="com.example.ceibaapp.UserCommentsListFragment"
+        android:label="fragment_user_comments_list"
+        tools:layout="@layout/fragment_user_comments_list" />
+    <fragment
+        android:id="@+id/usersListFragment"
+        android:name="com.example.ceibaapp.UsersListFragment"
+        android:label="fragment_users_list"
+        tools:layout="@layout/fragment_users_list" >
+        <action
+            android:id="@+id/action_usersListFragment_to_userCommentsListFragment"
+            app:destination="@id/userCommentsListFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+</navigation>

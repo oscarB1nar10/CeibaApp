@@ -3,6 +3,8 @@ package com.example.ceibaapp.persistence
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
+import androidx.room.Transaction
+import com.example.ceibaapp.models.Comment
 import com.example.ceibaapp.models.User
 
 @Dao
@@ -15,4 +17,8 @@ interface UserDao {
 
     @Insert
     fun insertUsers(vararg users: User)
+
+    @Transaction
+    @Query("SELECT * FROM Comment WHERE userCreatorId = (:userId)")
+    fun getCommentsFromSpecificUser(userId: Long): List<Comment>
 }

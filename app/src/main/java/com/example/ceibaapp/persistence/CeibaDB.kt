@@ -7,7 +7,7 @@ import com.example.ceibaapp.models.User
 import com.example.ceibaapp.models.UserWithComment
 
 @Database(
-    entities = [User::class, Comment::class, UserWithComment::class],
+    entities = [User::class, Comment::class],
     version = 1
 )
 abstract class CeibaDB : RoomDatabase() {
@@ -19,6 +19,5 @@ abstract class CeibaDB : RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
     abstract fun getCommentDao(): CommentDao
-    abstract fun getUserWithCommentDao(): UserWithCommentDao
 
 }

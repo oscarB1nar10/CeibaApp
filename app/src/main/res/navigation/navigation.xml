@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navigation"
-    app:startDestination="@id/userCommentsListFragment">
+    app:startDestination="@id/usersListFragment">
 
     <fragment
         android:id="@+id/userCommentsListFragment"
-        android:name="com.example.ceibaapp.UserCommentsListFragment"
+        android:name="com.example.ceibaapp.ui.userCommentsListFragment.UserCommentsListFragment"
         android:label="fragment_user_comments_list"
         tools:layout="@layout/fragment_user_comments_list" />
     <fragment
         android:id="@+id/usersListFragment"
-        android:name="com.example.ceibaapp.UsersListFragment"
+        android:name="com.example.ceibaapp.ui.userListFragment.UsersListFragment"
         android:label="fragment_users_list"
         tools:layout="@layout/fragment_users_list" >
         <action

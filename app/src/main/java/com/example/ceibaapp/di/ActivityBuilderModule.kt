@@ -1,7 +1,10 @@
 package com.example.ceibaapp.di
 
-import com.example.ceibaapp.MainActivity
+import com.example.ceibaapp.ui.MainActivity
+import com.example.ceibaapp.di.main.MainFragmentBuildersModule
+import com.example.ceibaapp.di.main.MainModule
 import com.example.ceibaapp.di.main.MainScope
+import com.example.ceibaapp.di.main.MainViewModelsModule
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -9,6 +12,9 @@ import dagger.android.ContributesAndroidInjector
 abstract class ActivityBuilderModule {
 
     @MainScope
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(
+        modules = [MainFragmentBuildersModule::class, MainViewModelsModule::class, MainModule::class]
+    )
     abstract fun contributeMaintActivity(): MainActivity
+
 }

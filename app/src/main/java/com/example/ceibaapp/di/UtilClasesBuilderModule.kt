@@ -1,9 +1,6 @@
 package com.example.ceibaapp.di
 
-import com.example.ceibaapp.util.NetworkState
-import com.example.ceibaapp.util.UserCommentResponseModelToEntity
-import com.example.ceibaapp.util.UserEntityToUserResponseModel
-import com.example.ceibaapp.util.UserListResponseModelToEntity
+import com.example.ceibaapp.util.*
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -22,7 +19,7 @@ abstract class UtilClasesBuilderModule {
     @ContributesAndroidInjector
     abstract fun contributeUserCommentResponseModelToEntity(): UserCommentResponseModelToEntity
 
-
-
+    @ContributesAndroidInjector
+    abstract fun contributeCommentEntityToUserCommentResponseModel(): CommentEntityToUserCommentResponseModel
 
 }

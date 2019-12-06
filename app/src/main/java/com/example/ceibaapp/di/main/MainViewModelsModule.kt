@@ -20,6 +20,6 @@ abstract class MainViewModelsModule{
     @Binds
     @IntoMap
     @ViewModelKey(UserCommentsListFragmentViewModel::class)
-    abstract fun bindUserListFragmentViewModel(viewModel: UserCommentsListFragmentViewModel): ViewModel
+    abstract fun bindUserCommentsListFragmentViewModel(viewModel: UserCommentsListFragmentViewModel): ViewModel
 
 }

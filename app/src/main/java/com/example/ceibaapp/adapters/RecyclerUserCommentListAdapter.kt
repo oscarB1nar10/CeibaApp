@@ -29,12 +29,12 @@ class RecyclerUserCommentListAdapter : RecyclerView.Adapter<RecyclerUserCommentL
 
 
 
-    fun submitMovieList(users: List<UserCommentResponseModel>){
+    fun submitMovieList(comments: List<UserCommentResponseModel>){
         val oldList = this.comments
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
             MovieItemDiffCallBack(
                 oldList,
-                users
+                comments
             )
         )
 

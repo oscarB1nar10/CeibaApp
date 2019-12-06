@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,11 +26,11 @@ class UsersListFragment : DaggerFragment() {
 
     private val TAG = "UsersListFragment"
     //vars
+    lateinit var pgMain: ProgressBar
+    lateinit var recyclerUserListAdapter: RecyclerUserListAdapter
     lateinit var userListFragmentViewModel: UserListFragmentViewModel
     @Inject
     lateinit var viewModelProvFactory: ViewModelProvFactory
-    @Inject
-    lateinit var recyclerUserListAdapter: RecyclerUserListAdapter
 
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -44,12 +45,14 @@ class UsersListFragment : DaggerFragment() {
     }
 
     private fun initViewComponents() {
+        pgMain = activity!!.findViewById(R.id.pg_main)
         recyclerViewSearchResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerUserListAdapter = RecyclerUserListAdapter(this)
         recyclerViewSearchResults.adapter = recyclerUserListAdapter
     }
 
     private fun getUserList() {
-        pg_main.visibility = View.VISIBLE
+        pgMain.visibility = View.VISIBLE
         getUserListObserve()
         userListFragmentViewModel.getUserList()
     }
@@ -57,7 +60,7 @@ class UsersListFragment : DaggerFragment() {
     private fun getUserListObserve(){
         userListFragmentViewModel.userResponseModel.removeObservers(viewLifecycleOwner)
         userListFragmentViewModel.userResponseModel.observe(viewLifecycleOwner, Observer {
-            pg_main.visibility = View.GONE
+            pgMain.visibility = View.GONE
             it?.let {
                 recyclerUserListAdapter.submitMovieList(it)
                 Log.i(TAG, "users: $it")

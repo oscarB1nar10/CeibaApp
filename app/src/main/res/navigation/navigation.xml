@@ -6,21 +6,27 @@
     app:startDestination="@id/usersListFragment">
 
     <fragment
-        android:id="@+id/userCommentsListFragment"
-        android:name="com.example.ceibaapp.ui.userCommentsListFragment.UserCommentsListFragment"
-        android:label="fragment_user_comments_list"
-        tools:layout="@layout/fragment_user_comments_list" />
-    <fragment
         android:id="@+id/usersListFragment"
         android:name="com.example.ceibaapp.ui.userListFragment.UsersListFragment"
         android:label="fragment_users_list"
         tools:layout="@layout/fragment_users_list" >
         <action
-            android:id="@+id/action_usersListFragment_to_userCommentsListFragment"
-            app:destination="@id/userCommentsListFragment"
+            android:id="@+id/action_usersListFragment_to_userCommentsListFragment_dest"
+            app:destination="@id/userCommentsListFragment_dest"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
             app:popExitAnim="@anim/slide_out_right"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/userCommentsListFragment_dest"
+        android:name="com.example.ceibaapp.ui.userCommentsListFragment.UserCommentsListFragment"
+        android:label="fragment_user_comments_list"
+        tools:layout="@layout/fragment_user_comments_list" >
+
+        <argument android:name="user"
+            app:argType="com.example.ceibaapp.network.responseModel.UserResponseModel"/>
+
     </fragment>
 </navigation>

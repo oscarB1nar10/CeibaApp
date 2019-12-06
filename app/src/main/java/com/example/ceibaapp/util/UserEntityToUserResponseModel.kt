@@ -10,14 +10,12 @@ import javax.inject.Inject
 class UserEntityToUserResponseModel @Inject constructor(userDao: UserDao) {
 
     val userDao = userDao
-    val users: MutableLiveData<List<UserResponseModel>> = MutableLiveData()
 
        private suspend fun getUserResponseModelFromUserEntity(users: List<User>): List<UserResponseModel>{
         var userResponseModelList = ArrayList<UserResponseModel>()
         users.forEach {
             userResponseModelList.add(UserResponseModel(it.email, it.userId.toInt(), it.name, it.phone))
         }
-         this.users.postValue(userResponseModelList)
          return userResponseModelList
     }
 

@@ -1,12 +1,17 @@
 package com.example.ceibaapp.network.responseModel
 
+import android.os.Parcel
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
+
+@Parcelize
 data class UserResponseModel(
     val email: String,
     val id: Int,
     val name: String,
     val phone: String
-){
+): Parcelable{
     override fun equals(other: Any?): Boolean {
         if(javaClass != other?.javaClass){
             return false

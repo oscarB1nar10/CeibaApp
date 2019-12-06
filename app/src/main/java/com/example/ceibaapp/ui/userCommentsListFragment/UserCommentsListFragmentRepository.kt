@@ -7,6 +7,7 @@ import com.example.ceibaapp.network.CommentApi
 import com.example.ceibaapp.network.UserApi
 import com.example.ceibaapp.network.responseModel.UserCommentResponseModel
 import com.example.ceibaapp.network.responseModel.UserResponseModel
+import com.example.ceibaapp.util.CommentEntityToUserCommentResponseModel
 import com.example.ceibaapp.util.NetworkState
 import com.example.ceibaapp.util.UserCommentResponseModelToEntity
 import kotlinx.coroutines.Dispatchers
@@ -21,7 +22,8 @@ import javax.inject.Inject
 class UserCommentsListFragmentRepository @Inject constructor(application: Application,
                                                              retrofit: Retrofit,
                                                              networkState: NetworkState,
-                                                             userCommentResponseModelToEntity: UserCommentResponseModelToEntity){
+                                                             userCommentResponseModelToEntity: UserCommentResponseModelToEntity,
+                                                             commentEntityToUserCommentResponseModel: CommentEntityToUserCommentResponseModel){
 
     private val TAG = "UserCommListRepository"
     //vars
@@ -29,14 +31,15 @@ class UserCommentsListFragmentRepository @Inject constructor(application: Applic
     val retrofit = retrofit
     val networkState = networkState
     val userCommentResponseModelToEntity = userCommentResponseModelToEntity
+    val commentEntityToUserCommentResponseModel = commentEntityToUserCommentResponseModel
     var userCommentResponseModel: MutableLiveData<List<UserCommentResponseModel>> = MutableLiveData()
 
     init {
         Log.i(TAG,"the injection over repository is working")
     }
 
-    suspend fun getUserCommentList() {
-        val call = retrofit.create(CommentApi::class.java).getComments()
+    suspend fun getUserCommentList(user: UserResponseModel) {
+        val call = retrofit.create(CommentApi::class.java).getComments(user.id.toLong())
         if(networkState.getNetworkState()) {
             withContext(Dispatchers.IO) {
                 withTimeout(5000L) {
@@ -64,9 +67,9 @@ class UserCommentsListFragmentRepository @Inject constructor(application: Applic
                 }
             }
         }else{
-            /*Log.i(TAG,"Without internet: " +
-                    "${userEntityToUserResponseModel.getUsersFromDB()}")
-            userResponseModel.value = userEntityToUserResponseModel.getUsersFromDB()*/
+            Log.i(TAG,"Without internet: " +
+                    "${commentEntityToUserCommentResponseModel.getUsersCommentsFromDB(user)}")
+            userCommentResponseModel.value = commentEntityToUserCommentResponseModel.getUsersCommentsFromDB(user)
 
         }
     }

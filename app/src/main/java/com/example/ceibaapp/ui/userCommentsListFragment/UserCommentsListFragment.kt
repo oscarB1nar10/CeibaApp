@@ -6,15 +6,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ceibaapp.R
 import com.example.ceibaapp.adapters.RecyclerUserCommentListAdapter
+import com.example.ceibaapp.network.responseModel.UserResponseModel
 import com.example.ceibaapp.ui.userListFragment.UserListFragmentViewModel
 import com.example.ceibaapp.viewModelFactory.ViewModelProvFactory
 import dagger.android.support.DaggerFragment
+import kotlinx.android.synthetic.main.fragment_user_comments_list.*
 import kotlinx.android.synthetic.main.fragment_users_list.*
 import javax.inject.Inject
 
@@ -22,8 +26,12 @@ import javax.inject.Inject
  * A simple [Fragment] subclass.
  */
 class UserCommentsListFragment : DaggerFragment() {
+    //const
+    private val TAG = "UserCommentListFrag"
 
     //vars
+    lateinit var pgMain: ProgressBar
+    lateinit var userResponseModel: UserResponseModel
     lateinit var userCommentsListFragmentViewModel: UserCommentsListFragmentViewModel
     @Inject
     lateinit var viewModelProvFactory: ViewModelProvFactory
@@ -31,37 +39,50 @@ class UserCommentsListFragment : DaggerFragment() {
     lateinit var recyclerUserCommentListAdapter: RecyclerUserCommentListAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        userResponseModel = arguments!!.getParcelable("user")!!
         return inflater.inflate(R.layout.fragment_user_comments_list, container, false)
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         userCommentsListFragmentViewModel = ViewModelProvider(this,viewModelProvFactory).
             get(UserCommentsListFragmentViewModel::class.java)
+        addUserInfo()
         initViewComponents()
-        getUserList()
+        getCommentList()
     }
+
+    private fun addUserInfo() {
+        name.text = userResponseModel.name
+        phone.text = userResponseModel.phone
+        email.text = userResponseModel.email
+    }
+
 
     private fun initViewComponents() {
-        recyclerViewSearchResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
-        recyclerViewSearchResults.adapter = recyclerUserListAdapter
+        pgMain = activity!!.findViewById(R.id.pg_main)
+        recyclerViewPostsResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
+        recyclerViewPostsResults.adapter = recyclerUserCommentListAdapter
     }
 
-    private fun getUserList() {
-        pg_main.visibility = View.VISIBLE
-        getUserListObserve()
-        userListFragmentViewModel.getUserList()
+    private fun getCommentList() {
+        pgMain.visibility = View.VISIBLE
+        getCommentListObserve()
+        userCommentsListFragmentViewModel.getUserCommentList(userResponseModel)
     }
 
-    private fun getUserListObserve(){
-        userListFragmentViewModel.userResponseModel.removeObservers(viewLifecycleOwner)
-        userListFragmentViewModel.userResponseModel.observe(viewLifecycleOwner, Observer {
-            pg_main.visibility = View.GONE
+    private fun getCommentListObserve(){
+        userCommentsListFragmentViewModel.userCommentResponseModel.removeObservers(viewLifecycleOwner)
+        userCommentsListFragmentViewModel.userCommentResponseModel.observe(viewLifecycleOwner, Observer {
+            pgMain.visibility = View.GONE
             it?.let {
-                recyclerUserListAdapter.submitMovieList(it)
+                recyclerUserCommentListAdapter.submitMovieList(it)
                 Log.i(TAG, "users: $it")
             }
         })
     }
+
+
 
 
 }

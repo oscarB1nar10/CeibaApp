@@ -15,7 +15,4 @@ interface UserDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertUsers(users: List<User>)
 
-    @Transaction
-    @Query("SELECT * FROM Comment WHERE userCreatorId = (:userId)")
-    fun getCommentsFromSpecificUser(userId: Long): List<Comment>
 }

@@ -22,10 +22,9 @@ class UserListFragmentViewModel @Inject
     fun getUserList(){
         viewModelScope.launch(Dispatchers.Unconfined) {
             val job = GlobalScope.launch(Dispatchers.Unconfined) {
-                userListFragmentRepository?.getUserList()
+                userListFragmentRepository.getUserList()
             }
             job.join()
-
         }
     }
 }

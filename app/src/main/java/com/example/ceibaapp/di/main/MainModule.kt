@@ -1,5 +1,6 @@
 package com.example.ceibaapp.di.main
 
+import com.example.ceibaapp.adapters.RecyclerUserCommentListAdapter
 import com.example.ceibaapp.adapters.RecyclerUserListAdapter
 import dagger.Module
 import dagger.Provides
@@ -15,6 +16,10 @@ class MainModule{
         fun provideRecyclerUserListAdapter(): RecyclerUserListAdapter {
             return RecyclerUserListAdapter()}
 
+        @JvmStatic
+        @Provides
+        fun provideRecyclerUserCommentListAdapter(): RecyclerUserCommentListAdapter {
+            return RecyclerUserCommentListAdapter()}
     }
 
 }

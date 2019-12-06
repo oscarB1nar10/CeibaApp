@@ -7,5 +7,5 @@ import com.example.ceibaapp.models.Comment
 @Dao
 interface CommentDao {
     @Insert
-    fun insertComments(vararg comments: Comment)
+    fun insertComments(comments: List<Comment>)
 }

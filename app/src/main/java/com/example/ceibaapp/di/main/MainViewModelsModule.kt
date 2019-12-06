@@ -2,6 +2,7 @@ package com.example.ceibaapp.di.main
 
 import androidx.lifecycle.ViewModel
 import com.example.ceibaapp.di.ViewModelKey
+import com.example.ceibaapp.ui.userCommentsListFragment.UserCommentsListFragmentViewModel
 import com.example.ceibaapp.ui.userListFragment.UserListFragmentViewModel
 import dagger.Binds
 import dagger.Module
@@ -15,5 +16,10 @@ abstract class MainViewModelsModule{
     @IntoMap
     @ViewModelKey(UserListFragmentViewModel::class)
     abstract fun bindUserListFragmentViewModel(viewModel: UserListFragmentViewModel): ViewModel
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(UserCommentsListFragmentViewModel::class)
+    abstract fun bindUserListFragmentViewModel(viewModel: UserCommentsListFragmentViewModel): ViewModel
 
 }

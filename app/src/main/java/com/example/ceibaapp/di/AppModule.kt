@@ -1,6 +1,8 @@
 package com.example.ceibaapp.di
 
 import android.app.Application
+import android.content.Context
+import android.net.ConnectivityManager
 import androidx.room.Room
 import com.example.ceibaapp.persistence.CeibaDB
 import com.example.ceibaapp.persistence.CeibaDB.Companion.DATABASENAME
@@ -52,6 +54,13 @@ class AppModule {
                 .baseUrl(Constants.BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
+        }
+
+        @Singleton
+        @JvmStatic
+        @Provides
+        fun provideConnectivityManager(application: Application): ConnectivityManager {
+            return application.getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
         }
 
     }

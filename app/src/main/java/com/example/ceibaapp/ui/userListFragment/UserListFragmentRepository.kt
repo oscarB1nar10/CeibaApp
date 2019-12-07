@@ -34,30 +34,37 @@ class UserListFragmentRepository @Inject constructor(//vars
     suspend fun getUsers() {
         val call = retrofit.create(UserApi::class.java).getUsers()
         if(networkState.getNetworkState()) {
-            withContext(Dispatchers.IO) {
-                withTimeout(5000L) {
-                    call.enqueue(object : Callback<List<UserResponseModel>> {
+            if(userEntityToUserResponseModel.getUsersFromDB().isEmpty()) {
+                withContext(Dispatchers.IO) {
+                    withTimeout(5000L) {
+                        call.enqueue(object : Callback<List<UserResponseModel>> {
 
-                        override fun onResponse(
-                            call: Call<List<UserResponseModel>>,
-                            response: Response<List<UserResponseModel>>
-                        ) {
-                            if (response.code() == 200) {
-                                response.let {
-                                    userResponseModel.value = response.body()
-                                    userListResponseModelToEntity.getUserEntityFromUserListResponseModel(
-                                                                                     response.body()!!)
+                            override fun onResponse(
+                                call: Call<List<UserResponseModel>>,
+                                response: Response<List<UserResponseModel>>
+                            ) {
+                                if (response.code() == 200) {
+                                    response.let {
+                                        userResponseModel.value = response.body()
+                                        userListResponseModelToEntity.getUserEntityFromUserListResponseModel(
+                                            response.body()!!
+                                        )
+                                    }
+
                                 }
-
                             }
-                        }
 
-                        override fun onFailure(call: Call<List<UserResponseModel>>, t: Throwable) {
-                            Log.e(TAG, "An error was happen: ${t.message}")
-
-                        }
-                    })
+                            override fun onFailure(
+                                call: Call<List<UserResponseModel>>,
+                                t: Throwable
+                            ) {
+                                Log.e(TAG, "An error was happen: ${t.message}")
+                            }
+                        })
+                    }
                 }
+            }else{
+                userResponseModel.value = userEntityToUserResponseModel.getUsersFromDB()
             }
         }else{
             Log.i(TAG,"Without internet: " +

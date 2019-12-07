@@ -37,6 +37,7 @@ class UserCommentsListFragmentRepository @Inject constructor(//vars
     suspend fun getComments(user: UserResponseModel) {
         val call = retrofit.create(CommentApi::class.java).getComments(user.id.toLong())
         if(networkState.getNetworkState()) {
+            if (commentEntityToUserCommentResponseModel.getUsersCommentsFromDB(user).isEmpty()) {
             withContext(Dispatchers.IO) {
                 withTimeout(5000L) {
                     call.enqueue(object : Callback<List<UserCommentResponseModel>> {
@@ -49,19 +50,26 @@ class UserCommentsListFragmentRepository @Inject constructor(//vars
                                 response.let {
                                     userCommentResponseModel.value = response.body()
                                     userCommentResponseModelToEntity.insertUserCommentEntityFromUserCommentResponseModel(
-                                        response.body()!!)
+                                        response.body()!!
+                                    )
                                 }
 
                             }
                         }
 
-                        override fun onFailure(call: Call<List<UserCommentResponseModel>>, t: Throwable) {
+                        override fun onFailure(
+                            call: Call<List<UserCommentResponseModel>>,
+                            t: Throwable
+                        ) {
                             Log.e(TAG, "An error was happen: ${t.message}")
 
                         }
                     })
                 }
             }
+        }else{
+                userCommentResponseModel.value = commentEntityToUserCommentResponseModel.getUsersCommentsFromDB(user)
+        }
         }else{
             Log.i(TAG,"Without internet: " +
                     "${commentEntityToUserCommentResponseModel.getUsersCommentsFromDB(user)}")

@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
 @Module
-abstract class UtilClasesBuilderModule {
+abstract class UtilClassBuilderModule {
 
     @ContributesAndroidInjector
     abstract fun contributeNetworkState(): NetworkState

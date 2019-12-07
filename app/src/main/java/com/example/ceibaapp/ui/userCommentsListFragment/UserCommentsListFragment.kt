@@ -15,11 +15,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ceibaapp.R
 import com.example.ceibaapp.adapters.RecyclerUserCommentListAdapter
 import com.example.ceibaapp.network.responseModel.UserResponseModel
-import com.example.ceibaapp.ui.userListFragment.UserListFragmentViewModel
 import com.example.ceibaapp.viewModelFactory.ViewModelProvFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_user_comments_list.*
-import kotlinx.android.synthetic.main.fragment_users_list.*
 import javax.inject.Inject
 
 /**
@@ -30,9 +28,9 @@ class UserCommentsListFragment : DaggerFragment() {
     private val TAG = "UserCommentListFrag"
 
     //vars
-    lateinit var pgMain: ProgressBar
-    lateinit var userResponseModel: UserResponseModel
-    lateinit var userCommentsListFragmentViewModel: UserCommentsListFragmentViewModel
+    private lateinit var pgMain: ProgressBar
+    private lateinit var userResponseModel: UserResponseModel
+    private lateinit var userCommentsListFragmentViewModel: UserCommentsListFragmentViewModel
     @Inject
     lateinit var viewModelProvFactory: ViewModelProvFactory
     @Inject
@@ -49,7 +47,7 @@ class UserCommentsListFragment : DaggerFragment() {
             get(UserCommentsListFragmentViewModel::class.java)
         addUserInfo()
         initViewComponents()
-        getCommentList()
+        getComments()
     }
 
     private fun addUserInfo() {
@@ -65,10 +63,10 @@ class UserCommentsListFragment : DaggerFragment() {
         recyclerViewPostsResults.adapter = recyclerUserCommentListAdapter
     }
 
-    private fun getCommentList() {
+    private fun getComments() {
         pgMain.visibility = View.VISIBLE
         getCommentListObserve()
-        userCommentsListFragmentViewModel.getUserCommentList(userResponseModel)
+        userCommentsListFragmentViewModel.getComments(userResponseModel)
     }
 
     private fun getCommentListObserve(){
@@ -76,7 +74,7 @@ class UserCommentsListFragment : DaggerFragment() {
         userCommentsListFragmentViewModel.userCommentResponseModel.observe(viewLifecycleOwner, Observer {
             pgMain.visibility = View.GONE
             it?.let {
-                recyclerUserCommentListAdapter.submitMovieList(it)
+                recyclerUserCommentListAdapter.submitCommentList(it)
                 Log.i(TAG, "users: $it")
             }
         })

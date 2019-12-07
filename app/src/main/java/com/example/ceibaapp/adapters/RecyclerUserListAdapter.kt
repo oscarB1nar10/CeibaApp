@@ -1,33 +1,22 @@
 package com.example.ceibaapp.adapters
 
-import android.app.Activity
-import android.app.Application
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.os.bundleOf
-import androidx.fragment.app.FragmentActivity
-import androidx.navigation.Navigation
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ceibaapp.R
 import com.example.ceibaapp.network.responseModel.UserResponseModel
-import com.example.ceibaapp.ui.MainActivity
-import com.example.ceibaapp.ui.userCommentsListFragment.UserCommentsListFragment
-import com.example.ceibaapp.ui.userListFragment.UsersListFragment
-import com.squareup.picasso.Picasso
-import javax.inject.Inject
+import com.example.ceibaapp.ui.userListFragment.UserFragment
 
-class RecyclerUserListAdapter constructor(view: UsersListFragment) :
+class RecyclerUserListAdapter constructor(private val view: UserFragment) :
                     RecyclerView.Adapter<RecyclerUserListAdapter.ViewHolder>() {
     //vars
-    var users: List<UserResponseModel> = ArrayList()
-    val view = view
+    private var users: List<UserResponseModel> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.user_list_item, parent, false)
@@ -48,12 +37,10 @@ class RecyclerUserListAdapter constructor(view: UsersListFragment) :
         }
     }
 
-
-
-    fun submitMovieList(users: List<UserResponseModel>){
+    fun submitUserList(users: List<UserResponseModel>){
         val oldList = this.users
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            MovieItemDiffCallBack(
+            UserItemDiffCallBack(
                 oldList,
                 users
             )
@@ -63,28 +50,27 @@ class RecyclerUserListAdapter constructor(view: UsersListFragment) :
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class MovieItemDiffCallBack(
-        var oldMovieDetail: List<UserResponseModel>,
-        var newMovieDetail: List<UserResponseModel>
+    class UserItemDiffCallBack(
+        private var oldUserDetail: List<UserResponseModel>,
+        private var newUserDetail: List<UserResponseModel>
     ):DiffUtil.Callback(){
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return (oldMovieDetail.get(oldItemPosition).id == newMovieDetail.get(newItemPosition).id)
+            return (oldUserDetail[oldItemPosition].id == newUserDetail[newItemPosition].id)
         }
 
         override fun getOldListSize(): Int {
-            return oldMovieDetail.size
+            return oldUserDetail.size
         }
 
         override fun getNewListSize(): Int {
-            return newMovieDetail.size
+            return newUserDetail.size
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldMovieDetail[oldItemPosition] == newMovieDetail[newItemPosition]
+            return oldUserDetail[oldItemPosition] == newUserDetail[newItemPosition]
         }
 
     }
-
 
     class ViewHolder(itemView: View): RecyclerView.ViewHolder(itemView){
         val txvName: TextView = itemView.findViewById(R.id.name)

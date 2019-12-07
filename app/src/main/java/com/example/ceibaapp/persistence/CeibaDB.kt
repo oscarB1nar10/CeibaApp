@@ -4,7 +4,6 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import com.example.ceibaapp.models.Comment
 import com.example.ceibaapp.models.User
-import com.example.ceibaapp.models.UserWithComment
 
 @Database(
     entities = [User::class, Comment::class],

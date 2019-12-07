@@ -29,10 +29,10 @@ class RecyclerUserCommentListAdapter : RecyclerView.Adapter<RecyclerUserCommentL
 
 
 
-    fun submitMovieList(comments: List<UserCommentResponseModel>){
+    fun submitCommentList(comments: List<UserCommentResponseModel>){
         val oldList = this.comments
         val diffResult: DiffUtil.DiffResult = DiffUtil.calculateDiff(
-            MovieItemDiffCallBack(
+            CommentsItemDiffCallBack(
                 oldList,
                 comments
             )
@@ -42,24 +42,24 @@ class RecyclerUserCommentListAdapter : RecyclerView.Adapter<RecyclerUserCommentL
         diffResult.dispatchUpdatesTo(this)
     }
 
-    class MovieItemDiffCallBack(
-        var oldMovieDetail: List<UserCommentResponseModel>,
-        var newMovieDetail: List<UserCommentResponseModel>
+    class CommentsItemDiffCallBack(
+        private var oldCommentDetail: List<UserCommentResponseModel>,
+        private var newCommentDetail: List<UserCommentResponseModel>
     ): DiffUtil.Callback(){
         override fun areItemsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return (oldMovieDetail.get(oldItemPosition).id == newMovieDetail.get(newItemPosition).id)
+            return (oldCommentDetail[oldItemPosition].id == newCommentDetail[newItemPosition].id)
         }
 
         override fun getOldListSize(): Int {
-            return oldMovieDetail.size
+            return oldCommentDetail.size
         }
 
         override fun getNewListSize(): Int {
-            return newMovieDetail.size
+            return newCommentDetail.size
         }
 
         override fun areContentsTheSame(oldItemPosition: Int, newItemPosition: Int): Boolean {
-            return oldMovieDetail[oldItemPosition] == newMovieDetail[newItemPosition]
+            return oldCommentDetail[oldItemPosition] == newCommentDetail[newItemPosition]
         }
 
     }

@@ -8,12 +8,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserCommentResponseModelToEntity @Inject constructor(commentDao: CommentDao) {
-
-    val commentDao = commentDao
+class UserCommentResponseModelToEntity @Inject constructor(private val commentDao: CommentDao) {
 
     fun insertUserCommentEntityFromUserCommentResponseModel(userCommentResponseModel: List<UserCommentResponseModel>){
-        var commentList = ArrayList<Comment>()
+        val commentList = ArrayList<Comment>()
         userCommentResponseModel.forEach {
             commentList.add(Comment(it.id.toLong(),it.userId.toLong(), it.title, it.body))
         }

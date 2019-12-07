@@ -17,25 +17,21 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class UserListFragmentRepository @Inject constructor(application: Application,
-                                                     retrofit: Retrofit,
-                                                     networkState: NetworkState,
-                                                     userListResponseModelToEntity: UserListResponseModelToEntity,
-                                                     userEntityToUserResponseModel: UserEntityToUserResponseModel) {
+class UserListFragmentRepository @Inject constructor(//vars
+    val application: Application,
+    private val retrofit: Retrofit,
+    private val networkState: NetworkState,
+    val userListResponseModelToEntity: UserListResponseModelToEntity,
+    private val userEntityToUserResponseModel: UserEntityToUserResponseModel
+) {
     private val TAG = "UserListRepository"
-    //vars
-    val application = application
-    val retrofit = retrofit
-    val networkState = networkState
-    val userListResponseModelToEntity = userListResponseModelToEntity
-    val userEntityToUserResponseModel = userEntityToUserResponseModel
     var userResponseModel: MutableLiveData<List<UserResponseModel>> = MutableLiveData()
 
     init {
         Log.i(TAG,"the injection over repository is working")
     }
 
-    suspend fun getUserList() {
+    suspend fun getUsers() {
         val call = retrofit.create(UserApi::class.java).getUsers()
         if(networkState.getNetworkState()) {
             withContext(Dispatchers.IO) {

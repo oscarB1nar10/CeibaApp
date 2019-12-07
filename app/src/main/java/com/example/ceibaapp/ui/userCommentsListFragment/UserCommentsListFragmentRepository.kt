@@ -19,26 +19,22 @@ import retrofit2.Response
 import retrofit2.Retrofit
 import javax.inject.Inject
 
-class UserCommentsListFragmentRepository @Inject constructor(application: Application,
-                                                             retrofit: Retrofit,
-                                                             networkState: NetworkState,
-                                                             userCommentResponseModelToEntity: UserCommentResponseModelToEntity,
-                                                             commentEntityToUserCommentResponseModel: CommentEntityToUserCommentResponseModel){
+class UserCommentsListFragmentRepository @Inject constructor(//vars
+    val application: Application,
+    private val retrofit: Retrofit,
+    private val networkState: NetworkState,
+    val userCommentResponseModelToEntity: UserCommentResponseModelToEntity,
+    private val commentEntityToUserCommentResponseModel: CommentEntityToUserCommentResponseModel
+){
 
     private val TAG = "UserCommListRepository"
-    //vars
-    val application = application
-    val retrofit = retrofit
-    val networkState = networkState
-    val userCommentResponseModelToEntity = userCommentResponseModelToEntity
-    val commentEntityToUserCommentResponseModel = commentEntityToUserCommentResponseModel
     var userCommentResponseModel: MutableLiveData<List<UserCommentResponseModel>> = MutableLiveData()
 
     init {
         Log.i(TAG,"the injection over repository is working")
     }
 
-    suspend fun getUserCommentList(user: UserResponseModel) {
+    suspend fun getComments(user: UserResponseModel) {
         val call = retrofit.create(CommentApi::class.java).getComments(user.id.toLong())
         if(networkState.getNetworkState()) {
             withContext(Dispatchers.IO) {

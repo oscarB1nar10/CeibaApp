@@ -2,6 +2,8 @@ package com.example.ceibaapp.ui.userListFragment
 
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,21 +16,25 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ceibaapp.R
 import com.example.ceibaapp.adapters.RecyclerUserListAdapter
+import com.example.ceibaapp.network.responseModel.UserResponseModel
 import com.example.ceibaapp.viewModelFactory.ViewModelProvFactory
 import dagger.android.support.DaggerFragment
 import kotlinx.android.synthetic.main.fragment_users_list.*
 import javax.inject.Inject
 
 /**
- * A simple [Fragment] subclass.
+ * Created by B1nar10 (Oscar Ivan Ramirez) - 06/12/2019
+ * A simple [Fragment] subclass to list users.
+ * All rights reserved
  */
-class UsersListFragment : DaggerFragment() {
+class UserFragment : DaggerFragment() {
 
     private val TAG = "UsersListFragment"
     //vars
-    lateinit var pgMain: ProgressBar
-    lateinit var recyclerUserListAdapter: RecyclerUserListAdapter
-    lateinit var userListFragmentViewModel: UserListFragmentViewModel
+    private var userList: List<UserResponseModel> = ArrayList()
+    private lateinit var pgMain: ProgressBar
+    private lateinit var recyclerUserListAdapter: RecyclerUserListAdapter
+    private lateinit var userListFragmentViewModel: UserListFragmentViewModel
     @Inject
     lateinit var viewModelProvFactory: ViewModelProvFactory
 
@@ -39,22 +45,48 @@ class UsersListFragment : DaggerFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         userListFragmentViewModel = ViewModelProvider(this,viewModelProvFactory).
-                                    get(UserListFragmentViewModel::class.java)
+            get(UserListFragmentViewModel::class.java)
         initViewComponents()
-        getUserList()
+        getUsers()
     }
 
     private fun initViewComponents() {
         pgMain = activity!!.findViewById(R.id.pg_main)
+        editTextSearch.addTextChangedListener(object: TextWatcher{
+            override fun afterTextChanged(textFilter: Editable?) {
+                filterUsers(textFilter.toString())
+            }
+            //region badFunc
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+            }
+            //endregion badFunc
+        })
         recyclerViewSearchResults.layoutManager = LinearLayoutManager(activity, RecyclerView.VERTICAL, false)
         recyclerUserListAdapter = RecyclerUserListAdapter(this)
         recyclerViewSearchResults.adapter = recyclerUserListAdapter
     }
 
-    private fun getUserList() {
+    private fun filterUsers(textFilter: String){
+        recyclerUserListAdapter.let {
+            val userResponseModelList = ArrayList<UserResponseModel>()
+            userList.forEach {
+                if(it.name.contains(textFilter)){
+                    userResponseModelList.add(it)
+                }
+            }
+            recyclerUserListAdapter.submitUserList(userResponseModelList)
+            recyclerUserListAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun getUsers() {
         pgMain.visibility = View.VISIBLE
+        editTextSearch.text.clear()
         getUserListObserve()
-        userListFragmentViewModel.getUserList()
+        userListFragmentViewModel.getUsers()
     }
 
     private fun getUserListObserve(){
@@ -62,11 +94,11 @@ class UsersListFragment : DaggerFragment() {
         userListFragmentViewModel.userResponseModel.observe(viewLifecycleOwner, Observer {
             pgMain.visibility = View.GONE
             it?.let {
-                recyclerUserListAdapter.submitMovieList(it)
+                recyclerUserListAdapter.submitUserList(it)
+                userList = it
                 Log.i(TAG, "users: $it")
             }
         })
     }
-
 
 }

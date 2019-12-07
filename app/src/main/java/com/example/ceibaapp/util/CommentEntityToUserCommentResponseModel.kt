@@ -1,7 +1,6 @@
 package com.example.ceibaapp.util
 
 import com.example.ceibaapp.models.Comment
-import com.example.ceibaapp.models.User
 import com.example.ceibaapp.network.responseModel.UserCommentResponseModel
 import com.example.ceibaapp.network.responseModel.UserResponseModel
 import com.example.ceibaapp.persistence.CommentDao
@@ -10,12 +9,10 @@ import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking
 import javax.inject.Inject
 
-class CommentEntityToUserCommentResponseModel @Inject constructor(commentDao: CommentDao) {
+class CommentEntityToUserCommentResponseModel @Inject constructor(private val commentDao: CommentDao) {
 
-    val commentDao = commentDao
-
-    private suspend fun getUserCommentResponseModelFromUserEntity(comments: List<Comment>): List<UserCommentResponseModel> {
-        var userCommentResponseModelList = ArrayList<UserCommentResponseModel>()
+    private  fun getUserCommentResponseModelFromUserEntity(comments: List<Comment>): List<UserCommentResponseModel> {
+        val userCommentResponseModelList = ArrayList<UserCommentResponseModel>()
         comments.forEach {
             userCommentResponseModelList.add(
                 UserCommentResponseModel(

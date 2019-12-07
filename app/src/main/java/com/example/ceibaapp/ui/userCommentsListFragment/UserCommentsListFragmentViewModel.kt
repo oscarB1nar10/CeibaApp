@@ -11,20 +11,19 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 class UserCommentsListFragmentViewModel @Inject
-constructor(userCommentsListFragmentRepository: UserCommentsListFragmentRepository) : ViewModel() {
+constructor(private var userCommentsListFragmentRepository: UserCommentsListFragmentRepository) : ViewModel() {
 
     private val TAG = "UserListViewModel"
-    private var userCommentsListFragmentRepository = userCommentsListFragmentRepository
     val userCommentResponseModel = userCommentsListFragmentRepository.userCommentResponseModel
 
     init {
         Log.i(TAG, "the injection over ViewModel is working")
     }
 
-    fun getUserCommentList(user: UserResponseModel) {
+    fun getComments(user: UserResponseModel) {
         viewModelScope.launch(Dispatchers.Unconfined) {
             val job = GlobalScope.launch(Dispatchers.Unconfined) {
-                userCommentsListFragmentRepository.getUserCommentList(user)
+                userCommentsListFragmentRepository.getComments(user)
             }
             job.join()
         }

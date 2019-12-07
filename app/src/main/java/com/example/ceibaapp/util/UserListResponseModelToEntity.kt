@@ -1,6 +1,5 @@
 package com.example.ceibaapp.util
 
-import androidx.lifecycle.MutableLiveData
 import com.example.ceibaapp.models.User
 import com.example.ceibaapp.network.responseModel.UserResponseModel
 import com.example.ceibaapp.persistence.UserDao
@@ -9,12 +8,10 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-class UserListResponseModelToEntity @Inject constructor(userDao: UserDao) {
-
-    val userDao = userDao
+class UserListResponseModelToEntity @Inject constructor(private val userDao: UserDao) {
 
     fun getUserEntityFromUserListResponseModel(userResponseModelList: List<UserResponseModel>){
-        var userList = ArrayList<User>()
+        val userList = ArrayList<User>()
         userResponseModelList.forEach {
             userList.add(User(it.id.toLong(), it.name, it.phone, it.email))
         }

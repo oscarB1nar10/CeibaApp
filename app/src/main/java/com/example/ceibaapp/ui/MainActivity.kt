@@ -6,9 +6,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.navigation.findNavController
 import com.example.ceibaapp.R
-import com.example.ceibaapp.di.BaseApplication
 import dagger.android.support.DaggerAppCompatActivity
 
 class MainActivity : DaggerAppCompatActivity() {
@@ -43,7 +41,7 @@ class MainActivity : DaggerAppCompatActivity() {
     ) {
         when(requestCode){
             REQUESTPERMISSION -> {
-                if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 } else { Toast.makeText(this,"Se deben dar permisos para poder continuar", Toast.LENGTH_LONG).show() }
                 return }
             else -> {

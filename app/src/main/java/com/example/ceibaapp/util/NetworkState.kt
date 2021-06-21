@@ -7,7 +7,7 @@ import javax.inject.Inject
 @Suppress("DEPRECATION")
 class NetworkState @Inject constructor(private val connectivityManager: ConnectivityManager) {
 
-    fun getNetworkState(): Boolean{
+    fun withInternetConnection(): Boolean{
         val networkInfo: NetworkInfo? = connectivityManager.activeNetworkInfo
         return networkInfo?.isConnected == true
 

@@ -1,9 +1,9 @@
 package com.example.ceibaapp.util
 
-import com.example.ceibaapp.models.Comment
-import com.example.ceibaapp.network.responseModel.UserCommentResponseModel
-import com.example.ceibaapp.network.responseModel.UserResponseModel
-import com.example.ceibaapp.persistence.CommentDao
+import com.example.ceibaapp.business.data.network.response_models.UserCommentResponseModel
+import com.example.ceibaapp.business.data.network.response_models.UserResponseModel
+import com.example.ceibaapp.business.domain.models.Comment
+import com.example.ceibaapp.framework.data_source.cache.database.CommentDao
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.runBlocking

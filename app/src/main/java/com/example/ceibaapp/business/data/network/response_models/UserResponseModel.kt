@@ -1,4 +1,4 @@
-package com.example.ceibaapp.network.responseModel
+package com.example.ceibaapp.business.data.network.response_models
 
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize

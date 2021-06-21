@@ -1,4 +1,4 @@
-package com.example.ceibaapp.models
+package com.example.ceibaapp.business.domain.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

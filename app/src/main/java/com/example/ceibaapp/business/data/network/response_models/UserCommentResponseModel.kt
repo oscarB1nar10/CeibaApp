@@ -1,4 +1,4 @@
-package com.example.ceibaapp.network.responseModel
+package com.example.ceibaapp.business.data.network.response_models
 
 data class UserCommentResponseModel(
     val body: String,

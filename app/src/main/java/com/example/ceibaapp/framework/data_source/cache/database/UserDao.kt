@@ -1,4 +1,4 @@
-package com.example.ceibaapp.persistence
+package com.example.ceibaapp.framework.data_source.cache.database
 
 import androidx.room.*
 import com.example.ceibaapp.business.domain.models.User

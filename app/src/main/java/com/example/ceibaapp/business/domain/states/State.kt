@@ -1,4 +1,4 @@
-package com.example.library.business.domain.states
+package com.example.ceibaapp.business.domain.states
 
 sealed class State<out T> {
     class Loading<T> : State<T>()

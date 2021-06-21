@@ -1,48 +1,49 @@
 package com.example.ceibaapp.framework.data_source.cache.mappers
 
-import com.example.ceibaapp.business.data.network.response_models.UserResponseModel
-import com.example.ceibaapp.business.domain.models.User
+import com.example.ceibaapp.business.data.network.response_models.UserCommentResponseModel
+import com.example.ceibaapp.business.domain.models.Comment
 import com.example.ceibaapp.business.domain.util.EntityMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class UserCacheMapper
+class CommentCacheMapper
 @Inject
-constructor() : EntityMapper<User, UserResponseModel> {
+constructor() : EntityMapper<Comment, UserCommentResponseModel> {
 
-    override fun mapFromEntityToDomain(entity: User): UserResponseModel {
-        return UserResponseModel(
-            entity.email,
-            entity.userId.toInt(),
-            entity.name,
-            entity.phone
+    override fun mapFromEntityToDomain(entity: Comment): UserCommentResponseModel {
+        return UserCommentResponseModel(
+            entity.description,
+            entity.commentId.toInt(),
+            entity.title,
+            entity.userCreatorId.toInt()
         )
     }
 
-    override fun mapFromDomainToEntity(domainModel: UserResponseModel): User {
-        return User(
+    override fun mapFromDomainToEntity(domainModel: UserCommentResponseModel): Comment {
+        return Comment(
             domainModel.id.toLong(),
-            domainModel.name,
-            domainModel.phone,
-            domainModel.email
+            domainModel.userId.toLong(),
+            domainModel.title,
+            domainModel.body
         )
     }
 
-    fun mapFromDomainListToEntityList(userResponseList: List<UserResponseModel>): List<User> {
-        val userListEntity = ArrayList<User>()
-        userResponseList.forEach { userModel ->
-            userListEntity.add(mapFromDomainToEntity(userModel))
+
+    fun mapFromDomainListToEntityList(UserCommentResponseList: List<UserCommentResponseModel>): List<Comment> {
+        val userCommentListEntity = ArrayList<Comment>()
+        UserCommentResponseList.forEach { userCommentModel ->
+            userCommentListEntity.add(mapFromDomainToEntity(userCommentModel))
         }
-        return userListEntity
+        return userCommentListEntity
     }
 
-    fun mapFromEntityListToDomainList(userList: List<User>): List<UserResponseModel> {
-        val userListDomain = ArrayList<UserResponseModel>()
-        userList.forEach { userList ->
-            userListDomain.add(mapFromEntityToDomain(userList))
+    fun mapFromEntityListToDomainList(userCommentList: List<Comment>): List<UserCommentResponseModel> {
+        val userCommentListDomain = ArrayList<UserCommentResponseModel>()
+        userCommentList.forEach { userCommentList ->
+            userCommentListDomain.add(mapFromEntityToDomain(userCommentList))
         }
-        return userListDomain
+        return userCommentListDomain
     }
 
 }

@@ -3,12 +3,17 @@ package com.example.ceibaapp.framework
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.view.MenuItem
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.navigation.Navigation
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.NavigationUI
+import com.example.ceibaapp.R
 import com.example.ceibaapp.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -19,6 +24,9 @@ class MainActivity : AppCompatActivity() {
     private val REQUESTPERMISSION = 123
 
     lateinit var mainActivityBinding: ActivityMainBinding
+    private val navController by lazy {
+        Navigation.findNavController(this, R.id.my_nav_host_fragment)
+    }
 
     private val mainActivitySharedViewModel: MainActivitySharedViewModel by viewModels()
 
@@ -28,8 +36,15 @@ class MainActivity : AppCompatActivity() {
         val view = mainActivityBinding.root
         setContentView(view)
 
+        configureUi()
         subscribeObservers()
         checkPermissions()
+    }
+
+    private fun configureUi() {
+        setSupportActionBar(mainActivityBinding.toolbar)
+        val appBarConfiguration = AppBarConfiguration(navController.graph)
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration)
     }
 
     private fun subscribeObservers() {
@@ -39,6 +54,14 @@ class MainActivity : AppCompatActivity() {
             else
                 mainActivityBinding.pgMain.visibility = View.GONE
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home) {
+            onBackPressed()
+            return true
+        }
+        return true
     }
 
     private fun checkPermissions() {
